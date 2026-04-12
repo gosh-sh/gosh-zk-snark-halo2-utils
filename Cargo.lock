@@ -467,6 +467,7 @@ dependencies = [
 [[package]]
 name = "bk-set-block-data-gen"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/bk-set-change-verifier-halo2-circuit-with-better-sha256?branch=main#4c58508cc7dbe47b5f1dd2461b24fa6dcb7545f6"
 dependencies = [
  "anyhow",
  "bincode",
@@ -486,6 +487,7 @@ dependencies = [
 [[package]]
 name = "bk-set-change-verifier-halo2-circuit-with-better-sha256"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/bk-set-change-verifier-halo2-circuit-with-better-sha256?branch=main#4c58508cc7dbe47b5f1dd2461b24fa6dcb7545f6"
 dependencies = [
  "bincode",
  "bk-set-block-data-gen",
@@ -503,6 +505,7 @@ dependencies = [
 [[package]]
 name = "bk-set-parsers"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/bk-set-change-verifier-halo2-circuit-with-better-sha256?branch=main#4c58508cc7dbe47b5f1dd2461b24fa6dcb7545f6"
 dependencies = [
  "hex",
 ]
@@ -1367,6 +1370,7 @@ checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 [[package]]
 name = "gosh-bls-verification"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#b7fcaa93d959e0e3dfd340e80c66f0d666b82985"
 dependencies = [
  "halo2-base 0.4.0",
  "halo2-ecc",
@@ -1376,6 +1380,7 @@ dependencies = [
 [[package]]
 name = "gosh-dense-balanced-tree"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#b7fcaa93d959e0e3dfd340e80c66f0d666b82985"
 dependencies = [
  "halo2-base 0.4.0",
  "pse-poseidon",
@@ -1384,6 +1389,7 @@ dependencies = [
 [[package]]
 name = "gosh-sha256-chip"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#b7fcaa93d959e0e3dfd340e80c66f0d666b82985"
 dependencies = [
  "halo2-base 0.4.0",
  "halo2-ecc",
@@ -1968,6 +1974,7 @@ dependencies = [
 [[package]]
 name = "layer-hashes-block-data-gen"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/layer-hashes-update-halo2-circuit?branch=main#2a13cdc622232b73269b5d8a01a66fb504833b50"
 dependencies = [
  "anyhow",
  "bincode",
@@ -1990,6 +1997,7 @@ dependencies = [
 [[package]]
 name = "layer-hashes-parsers"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/layer-hashes-update-halo2-circuit?branch=main#2a13cdc622232b73269b5d8a01a66fb504833b50"
 dependencies = [
  "hex",
 ]
@@ -1997,6 +2005,7 @@ dependencies = [
 [[package]]
 name = "layer-hashes-update-halo2-circuit"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/layer-hashes-update-halo2-circuit?branch=main#2a13cdc622232b73269b5d8a01a66fb504833b50"
 dependencies = [
  "gosh-bls-verification",
  "gosh-dense-balanced-tree",
