@@ -1,0 +1,30 @@
+[package]
+name = "gosh-zk-snark-halo2-utils"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "main", default-features = false, features = ["halo2-axiom"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rand = "0.8"
+
+[dev-dependencies]
+halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "main", default-features = false, features = ["halo2-axiom", "test-utils"] }
+bk-set-change-verifier-halo2-circuit-with-better-sha256 = { path = "../bk-set-change-verifier-halo2-circuit-with-better-sha256/circuit" }
+bk-set-block-data-gen = { path = "../bk-set-change-verifier-halo2-circuit-with-better-sha256/block_data_gen" }
+layer-hashes-update-halo2-circuit = { path = "../layer-hashes-update-halo2-circuit/circuit" }
+gosh-dense-balanced-tree = { git = "https://github.com/gosh-sh/gosh-halo2-crypto-lib", branch = "main" }
+hex = "0.4"
+
+[patch.crates-io]
+halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "main" }
+
+[patch."https://github.com/gosh-sh/gosh-halo2-crypto-lib"]
+gosh-sha256-chip = { path = "../gosh-halo2-crypto-lib/sha256-chip" }
+gosh-dense-balanced-tree = { path = "../gosh-halo2-crypto-lib/dense-balanced-tree" }
+gosh-bls-verification = { path = "../gosh-halo2-crypto-lib/bls-verification" }
+
+[profile.dev]
+opt-level = 3
+
