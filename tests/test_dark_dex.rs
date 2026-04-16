@@ -330,7 +330,8 @@ fn poseidon_hash_96_native(a: &[u8; 32], b: &[u8; 32], c: &[u8; 32]) -> [u8; 32]
     fr_to_bytes(hash)
 }
 
-/// Compute the two public instances for the circuit: `[poseidon_commitment, final_root]`.
+/// Compute the four public instances for the circuit:
+/// `[poseidon_commitment, final_root, voucher_nominal, token_type]`.
 fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
     // Instance 1: Poseidon(voucher_nominal, token_type, sk_u, sk_u_commit)
     let child_data = &parsed.entries[1].cell_repr_data;
@@ -398,7 +399,8 @@ fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
         current
     };
 
-    vec![poseidon_commitment, final_root]
+    // Instances 3 & 4: voucher_nominal, token_type
+    vec![poseidon_commitment, final_root, voucher_nominal_val, token_type_val]
 }
 
 // ---------------------------------------------------------------------------
@@ -539,9 +541,11 @@ fn test_dark_dex_prove() {
     let instances = compute_instances(&parsed);
     println!("[timing] fixture load + parse + instances: {:?}", t.elapsed());
     println!(
-        "instances: poseidon={}, final_root={}",
+        "instances: poseidon={}, final_root={}, voucher_nominal={}, token_type={}",
         hex::encode(instances[0].to_repr()),
         hex::encode(instances[1].to_repr()),
+        hex::encode(instances[2].to_repr()),
+        hex::encode(instances[3].to_repr()),
     );
 
     // 2. Load break_points and build circuit for proving.
@@ -596,7 +600,7 @@ fn test_dark_dex_prove() {
     assert!(valid, "Proof verification should pass with correct instances");
 
     // 7. Negative test: wrong instances should fail.
-    let wrong_instances = vec![Fr::from(42u64), Fr::from(99u64)];
+    let wrong_instances = vec![Fr::from(42u64), Fr::from(99u64), Fr::from(0u64), Fr::from(0u64)];
     let invalid = proof.verify_with_vk_from_path(
         vk_path.to_str().unwrap(),
         &srs,

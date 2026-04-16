@@ -1418,6 +1418,7 @@ checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 [[package]]
 name = "gosh-bls-verification"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#124f7e5f268c497a599512583821defa282c51b1"
 dependencies = [
  "halo2-base 0.4.0",
  "halo2-ecc",
@@ -1427,6 +1428,7 @@ dependencies = [
 [[package]]
 name = "gosh-dark-dex-halo2-new-circuit"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=finalization_option_1#8ea56080fe6e340976cb0b2e3b6f5b6fe32cb679"
 dependencies = [
  "failure",
  "gosh-dense-balanced-tree",
@@ -1448,6 +1450,7 @@ dependencies = [
 [[package]]
 name = "gosh-dense-balanced-tree"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#124f7e5f268c497a599512583821defa282c51b1"
 dependencies = [
  "halo2-base 0.4.0",
  "pse-poseidon",
@@ -1456,6 +1459,7 @@ dependencies = [
 [[package]]
 name = "gosh-sha256-chip"
 version = "0.1.0"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#124f7e5f268c497a599512583821defa282c51b1"
 dependencies = [
  "halo2-base 0.4.0",
  "halo2-ecc",
