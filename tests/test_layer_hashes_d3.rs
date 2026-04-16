@@ -13,7 +13,7 @@ use layer_hashes_update_halo2_circuit::{FIRST_ROOT_HASH_OFFSET, MAX_LAYERS};
 
 const FIXTURES_DIR: &str = concat!(
     env!("CARGO_MANIFEST_DIR"),
-    "/../layer-hashes-update-halo2-circuit/circuit/tests/fixtures"
+    "/tests/fixtures/layer_hashes"
 );
 
 /// The fixture used for keygen (any fixture works; we pick one for determinism).

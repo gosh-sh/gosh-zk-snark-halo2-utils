@@ -73,30 +73,35 @@ pub fn read_vk_from_path(path: &str, config_params: &BaseCircuitParams) -> Verif
     read_vk(&vk_bytes, config_params)
 }
 
-/// Read break points from a binary file (legacy format: 2 bytes per u16, little-endian).
+/// Read break points from a binary file (4 bytes per u32, little-endian).
 pub fn read_break_points(path: &str) -> Vec<Vec<usize>> {
     let mut file = File::open(path).unwrap();
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer).unwrap();
 
-    if buffer.len() % 2 != 0 {
-        panic!("Break points file has odd byte count");
+    if buffer.len() % 4 != 0 {
+        panic!("Break points file byte count is not a multiple of 4");
     }
 
-    let mut break_points = Vec::with_capacity(buffer.len() / 2);
-    for chunk in buffer.chunks_exact(2) {
-        let value = u16::from_le_bytes([chunk[0], chunk[1]]);
+    let mut break_points = Vec::with_capacity(buffer.len() / 4);
+    for chunk in buffer.chunks_exact(4) {
+        let value = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
         break_points.push(value as usize);
     }
 
     vec![break_points]
 }
 
-/// Save break points to a binary file (legacy format: 2 bytes per u16, little-endian).
+/// Save break points to a binary file (4 bytes per u32, little-endian).
 pub fn save_break_points(break_points: &[Vec<usize>], path: &str) {
     assert!(break_points.len() == 1, "Expected single-phase break points");
     let mut file = File::create(path).unwrap();
     for &value in &break_points[0] {
-        file.write_all(&value.to_le_bytes()[0..2]).unwrap();
+        assert!(
+            value <= u32::MAX as usize,
+            "Break point value {} exceeds u32::MAX",
+            value
+        );
+        file.write_all(&(value as u32).to_le_bytes()).unwrap();
     }
 }

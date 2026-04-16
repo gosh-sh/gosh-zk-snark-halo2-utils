@@ -15,10 +15,20 @@ bk-set-change-verifier-halo2-circuit-with-better-sha256 = { git = "https://githu
 bk-set-block-data-gen = { git = "https://github.com/gosh-sh/bk-set-change-verifier-halo2-circuit-with-better-sha256", branch = "main" }
 layer-hashes-update-halo2-circuit = { git = "https://github.com/gosh-sh/layer-hashes-update-halo2-circuit", branch = "main" }
 gosh-dense-balanced-tree = { git = "https://github.com/gosh-sh/gosh-halo2-crypto-lib", branch = "main" }
+gosh-dark-dex-halo2-new-circuit = { path = "../gosh-dark-dex-halo2-new-circuit" }
+tvm_block = { git = "https://github.com/tvmlabs/tvm-sdk", package = "tvm_block" }
 hex = "0.4"
 
 [patch.crates-io]
 halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "main" }
+
+# Redirect gosh-halo2-crypto-lib git deps to local paths so that
+# gosh-dark-dex-halo2-new-circuit (path deps) and other crates (git deps)
+# resolve to the same source.
+[patch."https://github.com/gosh-sh/gosh-halo2-crypto-lib"]
+gosh-sha256-chip = { path = "../gosh-halo2-crypto-lib/sha256-chip" }
+gosh-dense-balanced-tree = { path = "../gosh-halo2-crypto-lib/dense-balanced-tree" }
+gosh-bls-verification = { path = "../gosh-halo2-crypto-lib/bls-verification" }
 
 [profile.dev]
 opt-level = 3
