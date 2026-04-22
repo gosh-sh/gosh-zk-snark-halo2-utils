@@ -1428,7 +1428,7 @@ dependencies = [
 [[package]]
 name = "gosh-dark-dex-halo2-new-circuit"
 version = "0.1.0"
-source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=finalization_option_1#8ea56080fe6e340976cb0b2e3b6f5b6fe32cb679"
+source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=feat%2Feph-instance-binding#2ebcec863d59e74cbabb121de089eff553f7fdda"
 dependencies = [
  "failure",
  "gosh-dense-balanced-tree",

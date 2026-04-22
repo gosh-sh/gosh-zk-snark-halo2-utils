@@ -15,7 +15,7 @@ bk-set-change-verifier-halo2-circuit-with-better-sha256 = { git = "https://githu
 bk-set-block-data-gen = { git = "https://github.com/gosh-sh/bk-set-change-verifier-halo2-circuit-with-better-sha256", branch = "main" }
 layer-hashes-update-halo2-circuit = { git = "https://github.com/gosh-sh/layer-hashes-update-halo2-circuit", branch = "main" }
 gosh-dense-balanced-tree = { git = "https://github.com/gosh-sh/gosh-halo2-crypto-lib", branch = "main" }
-gosh-dark-dex-halo2-new-circuit = { git = "https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit", branch = "finalization_option_1" }
+gosh-dark-dex-halo2-new-circuit = { git = "https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit", branch = "feat/eph-instance-binding" }
 tvm_block = { git = "https://github.com/tvmlabs/tvm-sdk", package = "tvm_block" }
 hex = "0.4"
 
