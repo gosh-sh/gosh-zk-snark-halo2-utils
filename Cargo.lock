@@ -1428,7 +1428,7 @@ dependencies = [
 [[package]]
 name = "gosh-dark-dex-halo2-new-circuit"
 version = "0.1.0"
-source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=feat%2Feph-instance-binding#2ebcec863d59e74cbabb121de089eff553f7fdda"
+source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=feat%2Feph-instance-binding#9809253952cd65e1aae7afd8b59bb10a72a9451b"
 dependencies = [
  "failure",
  "gosh-dense-balanced-tree",
@@ -1443,14 +1443,14 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.10.9",
- "tvm_block 2.24.17",
- "tvm_types 2.24.17",
+ "tvm_block 2.24.20",
+ "tvm_types 2.24.20",
 ]
 
 [[package]]
 name = "gosh-dense-balanced-tree"
 version = "0.1.0"
-source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#124f7e5f268c497a599512583821defa282c51b1"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#c1649744e9d66d6bfe3dde9fd0b80664de4dd5d0"
 dependencies = [
  "halo2-base 0.4.0",
  "pse-poseidon",
@@ -1459,7 +1459,7 @@ dependencies = [
 [[package]]
 name = "gosh-sha256-chip"
 version = "0.1.0"
-source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#124f7e5f268c497a599512583821defa282c51b1"
+source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#c1649744e9d66d6bfe3dde9fd0b80664de4dd5d0"
 dependencies = [
  "halo2-base 0.4.0",
  "halo2-ecc",
@@ -1480,7 +1480,7 @@ dependencies = [
  "rand 0.8.5",
  "serde",
  "serde_json",
- "tvm_block 2.24.17",
+ "tvm_block 2.24.20",
 ]
 
 [[package]]
@@ -3775,22 +3775,21 @@ dependencies = [
 
 [[package]]
 name = "tvm_block"
-version = "2.24.17"
-source = "git+https://github.com/tvmlabs/tvm-sdk#56c826c56940681ee27933db9b740cc3a31c6414"
+version = "2.24.20"
+source = "git+https://github.com/tvmlabs/tvm-sdk#5707399edc79581c3344dc42b941dbd0b1d867d5"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
  "crc",
  "ed25519",
  "ed25519-dalek",
- "failure",
  "hex",
  "log",
  "num",
  "num-traits",
  "sha2 0.10.9",
  "thiserror 2.0.18",
- "tvm_types 2.24.17",
+ "tvm_types 2.24.20",
 ]
 
 [[package]]
@@ -3857,10 +3856,11 @@ dependencies = [
 
 [[package]]
 name = "tvm_types"
-version = "2.24.17"
-source = "git+https://github.com/tvmlabs/tvm-sdk#56c826c56940681ee27933db9b740cc3a31c6414"
+version = "2.24.20"
+source = "git+https://github.com/tvmlabs/tvm-sdk#5707399edc79581c3344dc42b941dbd0b1d867d5"
 dependencies = [
  "aes",
+ "anyhow",
  "base64 0.22.1",
  "blst",
  "crc",
@@ -3868,7 +3868,6 @@ dependencies = [
  "curve25519-dalek",
  "ed25519",
  "ed25519-dalek",
- "failure",
  "fastbloom 0.17.0",
  "hex",
  "lazy_static",

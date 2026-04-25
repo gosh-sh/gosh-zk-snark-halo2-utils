@@ -339,8 +339,8 @@ fn poseidon_hash_96_native(a: &[u8; 32], b: &[u8; 32], c: &[u8; 32]) -> [u8; 32]
     fr_to_bytes(hash)
 }
 
-/// Compute the five public instances for the circuit:
-/// `[poseidon_commitment, final_root, voucher_nominal, token_type, ephemeral_pubkey]`.
+/// Compute the seven public instances for the circuit:
+/// `[poseidon_commitment, final_root, voucher_nominal, token_type, ephemeral_pubkey, account_dapp_id, account_id]`.
 fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
     // Instance 1: Poseidon(voucher_nominal, token_type, sk_u, sk_u_commit)
     let child_data = &parsed.entries[1].cell_repr_data;
@@ -408,13 +408,18 @@ fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
         current
     };
 
-    // Instances 3, 4, 5: voucher_nominal, token_type, ephemeral_pubkey
+    // Instances 3–6: voucher_nominal, token_type, ephemeral_pubkey, account_dapp_id, account_id
+    // Circuit uses bytes_to_fr (LE packing), so test must match.
+    let account_dapp_id_val = bytes_to_fr(&parsed.account_dapp_id);
+    let account_id_val = bytes_to_fr(&parsed.account_id);
     vec![
         poseidon_commitment,
         final_root,
         voucher_nominal_val,
         token_type_val,
         parsed.ephemeral_pubkey,
+        account_dapp_id_val,
+        account_id_val,
     ]
 }
 
@@ -558,12 +563,14 @@ fn test_dark_dex_prove() {
     let instances = compute_instances(&parsed);
     println!("[timing] fixture load + parse + instances: {:?}", t.elapsed());
     println!(
-        "instances: poseidon={}, final_root={}, voucher_nominal={}, token_type={}, ephemeral_pubkey={}",
+        "instances: poseidon={}, final_root={}, voucher_nominal={}, token_type={}, ephemeral_pubkey={}, account_dapp_id={}, account_id={}",
         hex::encode(instances[0].to_repr()),
         hex::encode(instances[1].to_repr()),
         hex::encode(instances[2].to_repr()),
         hex::encode(instances[3].to_repr()),
         hex::encode(instances[4].to_repr()),
+        hex::encode(instances[5].to_repr()),
+        hex::encode(instances[6].to_repr()),
     );
 
     // 2. Load break_points and build circuit for proving.
@@ -621,6 +628,8 @@ fn test_dark_dex_prove() {
     let wrong_instances = vec![
         Fr::from(42u64),
         Fr::from(99u64),
+        Fr::from(0u64),
+        Fr::from(0u64),
         Fr::from(0u64),
         Fr::from(0u64),
         Fr::from(0u64),
