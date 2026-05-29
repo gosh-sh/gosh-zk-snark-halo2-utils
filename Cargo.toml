@@ -12,7 +12,7 @@ rand = "0.8"
 [dev-dependencies]
 halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "main", default-features = false, features = ["halo2-axiom", "test-utils"] }
 gosh-dense-balanced-tree = { git = "https://github.com/gosh-sh/gosh-halo2-crypto-lib", branch = "main" }
-gosh-dark-dex-halo2-new-circuit = { git = "https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit", branch = "main" }
+dex-halo2-circuit = { git = "https://github.com/gosh-sh/dexdo-halo2-kit", branch = "main" }
 tvm_block = { git = "https://github.com/tvmlabs/tvm-sdk", package = "tvm_block" }
 hex = "0.4"
 

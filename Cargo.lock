@@ -325,6 +325,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "dex-halo2-circuit"
+version = "0.1.0"
+source = "git+https://github.com/gosh-sh/dexdo-halo2-kit?branch=main#03cacde38bab63e595bdc4a90892c066b3ea000c"
+dependencies = [
+ "failure",
+ "gosh-dense-balanced-tree",
+ "gosh-sha256-chip",
+ "halo2-base",
+ "halo2-ecc",
+ "hex",
+ "itertools 0.11.0",
+ "pse-poseidon",
+ "rand",
+ "rand_core",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tvm_block",
+ "tvm_types",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -480,28 +502,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
 
 [[package]]
-name = "gosh-dark-dex-halo2-new-circuit"
-version = "0.1.0"
-source = "git+https://github.com/gosh-sh/gosh-dark-dex-halo2-new-circuit?branch=main#468e0d1c753f80d11e8e15c937a83f7aec687573"
-dependencies = [
- "failure",
- "gosh-dense-balanced-tree",
- "gosh-sha256-chip",
- "halo2-base",
- "halo2-ecc",
- "hex",
- "itertools 0.11.0",
- "pse-poseidon",
- "rand",
- "rand_core",
- "serde",
- "serde_json",
- "sha2",
- "tvm_block",
- "tvm_types",
-]
-
-[[package]]
 name = "gosh-dense-balanced-tree"
 version = "0.1.0"
 source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#9a917fe0a6a5e04cd6b6affb3d93e19399ff5ae7"
@@ -524,7 +524,7 @@ dependencies = [
 name = "gosh-zk-snark-halo2-utils"
 version = "0.1.0"
 dependencies = [
- "gosh-dark-dex-halo2-new-circuit",
+ "dex-halo2-circuit",
  "gosh-dense-balanced-tree",
  "halo2-base",
  "hex",

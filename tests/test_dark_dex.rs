@@ -16,9 +16,9 @@
 use std::sync::LazyLock;
 use std::time::Instant;
 
-use gosh_dark_dex_halo2_new_circuit::boc_helper::{serialize_cells_tree_root_first, BocFlattenData};
-use gosh_dark_dex_halo2_new_circuit::dark_dex_circuit_new::DarkDexCircuitNew;
-use gosh_dark_dex_halo2_new_circuit::poseidon::poseidon_hash;
+use dex_halo2_circuit::boc_helper::{serialize_cells_tree_root_first, BocFlattenData};
+use dex_halo2_circuit::dark_dex_circuit_new::DarkDexCircuitNew;
+use dex_halo2_circuit::poseidon::poseidon_hash;
 
 use gosh_dense_balanced_tree::{
     bytes_to_fr, compute_root_native, fr_to_bytes, preprocess_dense_proof, DenseChainLink,
