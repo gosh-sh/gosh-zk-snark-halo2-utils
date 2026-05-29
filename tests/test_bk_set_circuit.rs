@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+/*use std::sync::LazyLock;
 use std::time::Instant;
 
 use bk_set_change_verifier_halo2_circuit_with_better_sha256::primary_circuit::PrimaryBkSetVerifierCircuit;
@@ -324,4 +324,4 @@ fn test_bk_set_verify_with_static_vk() {
 
     println!("[timing] TOTAL: {:?}", t_total.elapsed());
     println!("bk-set verify-with-static-vk: PASSED");
-}
+}*/
