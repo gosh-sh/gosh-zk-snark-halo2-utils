@@ -99,6 +99,8 @@ struct DexFixtureJson {
     #[allow(dead_code)]
     description: String,
     sk_u_hex: String,
+    #[serde(default)]
+    ephemeral_pubkey_hex: String,
     event_boc_base64: String,
     events_proof_siblings_hex: Vec<String>,
     events_proof_position: usize,
@@ -183,6 +185,7 @@ const EVENT_TOKEN_TYPE_END: usize = 74;
 
 struct ParsedFixture {
     sk_u: Fr,
+    ephemeral_pubkey: Fr,
     entries: [BocFlattenData; 2],
     events_proof_siblings: Vec<[u8; 32]>,
     events_proof_position: usize,
@@ -198,6 +201,11 @@ struct ParsedFixture {
 
 fn parse_fixture(json: &DexFixtureJson) -> ParsedFixture {
     let sk_u = hex_to_fr(&json.sk_u_hex);
+    let ephemeral_pubkey = if json.ephemeral_pubkey_hex.is_empty() {
+        Fr::from(0u64)
+    } else {
+        bytes_to_fr_be(&hex_to_32(&json.ephemeral_pubkey_hex))
+    };
 
     let msg = Message::construct_from_base64(&json.event_boc_base64)
         .expect("Failed to parse event BOC");
@@ -290,6 +298,7 @@ fn parse_fixture(json: &DexFixtureJson) -> ParsedFixture {
 
     ParsedFixture {
         sk_u,
+        ephemeral_pubkey,
         entries,
         events_proof_siblings,
         events_proof_position: json.events_proof_position,
@@ -330,8 +339,8 @@ fn poseidon_hash_96_native(a: &[u8; 32], b: &[u8; 32], c: &[u8; 32]) -> [u8; 32]
     fr_to_bytes(hash)
 }
 
-/// Compute the four public instances for the circuit:
-/// `[poseidon_commitment, final_root, voucher_nominal, token_type]`.
+/// Compute the five public instances for the circuit:
+/// `[poseidon_commitment, final_root, voucher_nominal, token_type, ephemeral_pubkey]`.
 fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
     // Instance 1: Poseidon(voucher_nominal, token_type, sk_u, sk_u_commit)
     let child_data = &parsed.entries[1].cell_repr_data;
@@ -399,8 +408,14 @@ fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
         current
     };
 
-    // Instances 3 & 4: voucher_nominal, token_type
-    vec![poseidon_commitment, final_root, voucher_nominal_val, token_type_val]
+    // Instances 3 & 4: voucher_nominal, token_type, ephemeral_pubkey
+    vec![
+        poseidon_commitment,
+        final_root,
+        voucher_nominal_val,
+        token_type_val,
+        parsed.ephemeral_pubkey,
+    ]
 }
 
 // ---------------------------------------------------------------------------
@@ -410,6 +425,7 @@ fn compute_instances(parsed: &ParsedFixture) -> Vec<Fr> {
 fn build_circuit(parsed: ParsedFixture, params: BaseCircuitParams) -> DarkDexCircuitNew {
     DarkDexCircuitNew::new(
         parsed.sk_u,
+        parsed.ephemeral_pubkey,
         parsed.entries,
         parsed.events_proof_siblings,
         parsed.events_proof_position,
@@ -432,6 +448,7 @@ fn build_circuit_for_proving(
 ) -> DarkDexCircuitNew {
     DarkDexCircuitNew::new_for_proving(
         parsed.sk_u,
+        parsed.ephemeral_pubkey,
         parsed.entries,
         parsed.events_proof_siblings,
         parsed.events_proof_position,
@@ -541,11 +558,12 @@ fn test_dark_dex_prove() {
     let instances = compute_instances(&parsed);
     println!("[timing] fixture load + parse + instances: {:?}", t.elapsed());
     println!(
-        "instances: poseidon={}, final_root={}, voucher_nominal={}, token_type={}",
+        "instances: poseidon={}, final_root={}, voucher_nominal={}, token_type={}, ephemeral_pubkey={}",
         hex::encode(instances[0].to_repr()),
         hex::encode(instances[1].to_repr()),
         hex::encode(instances[2].to_repr()),
         hex::encode(instances[3].to_repr()),
+        hex::encode(instances[4].to_repr()),
     );
 
     // 2. Load break_points and build circuit for proving.
@@ -600,7 +618,13 @@ fn test_dark_dex_prove() {
     assert!(valid, "Proof verification should pass with correct instances");
 
     // 7. Negative test: wrong instances should fail.
-    let wrong_instances = vec![Fr::from(42u64), Fr::from(99u64), Fr::from(0u64), Fr::from(0u64)];
+    let wrong_instances = vec![
+        Fr::from(42u64),
+        Fr::from(99u64),
+        Fr::from(0u64),
+        Fr::from(0u64),
+        Fr::from(0u64),
+    ];
     let invalid = proof.verify_with_vk_from_path(
         vk_path.to_str().unwrap(),
         &srs,

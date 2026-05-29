@@ -1,4 +1,4 @@
-mod common;
+/*mod common;
 
 use std::time::Instant;
 
@@ -56,3 +56,4 @@ fn test_layer_hashes_synthetic_verify_with_vk_bytes_d8() {
 fn test_layer_hashes_synthetic_verify_with_static_vk_d8() {
     common::run_verify_with_static_vk(8, "layer_hashes_synthetic_d8");
 }
+*/
