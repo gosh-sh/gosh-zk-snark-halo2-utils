@@ -1,5 +1,6 @@
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::{Read, Write};
+use std::path::Path;
 
 use halo2_base::gates::circuit::builder::BaseCircuitBuilder;
 use halo2_base::gates::circuit::BaseCircuitParams;
@@ -9,6 +10,42 @@ use halo2_base::halo2_proofs::{
     poly::kzg::commitment::ParamsKZG,
     SerdeFormat,
 };
+
+/// Default `SerdeFormat` used by the `save_vk_to_path` / `save_pk_to_path`
+/// helpers. Matches the format consumed by `read_vk*` / `read_pk*` above.
+const SAVE_KEY_SERDE_FORMAT: SerdeFormat = SerdeFormat::RawBytesUnchecked;
+
+/// Write a byte slice to `path`, creating any missing parent directories.
+pub fn save_bytes(path: &str, data: &[u8]) {
+    if let Some(parent) = Path::new(path).parent() {
+        fs::create_dir_all(parent).unwrap();
+    }
+    fs::write(path, data).unwrap();
+}
+
+/// Serialize a verifying key with `SerdeFormat::RawBytesUnchecked` and write
+/// it to `path`, creating any missing parent directories.
+pub fn save_vk_to_path(vk: &VerifyingKey<G1Affine>, path: &str) {
+    let mut buf: Vec<u8> = Vec::new();
+    vk.write(&mut buf, SAVE_KEY_SERDE_FORMAT).unwrap();
+    save_bytes(path, &buf);
+}
+
+/// Serialize a proving key with `SerdeFormat::RawBytesUnchecked` and write
+/// it to `path`, creating any missing parent directories.
+pub fn save_pk_to_path(pk: &ProvingKey<G1Affine>, path: &str) {
+    let mut buf: Vec<u8> = Vec::new();
+    pk.write(&mut buf, SAVE_KEY_SERDE_FORMAT).unwrap();
+    save_bytes(path, &buf);
+}
+
+/// Like [`read_config_params`] but returns `None` instead of panicking when
+/// the file is missing or unparseable. Useful for drive-cache-vs-keygen
+/// branches.
+pub fn try_read_config_params(path: &str) -> Option<BaseCircuitParams> {
+    let data = fs::read_to_string(path).ok()?;
+    serde_json::from_str(&data).ok()
+}
 
 /// Read KZG SRS parameters from a file.
 pub fn read_kzg_params(path: &str) -> ParamsKZG<Bn256> {
