@@ -1,6 +1,7 @@
 pub mod io;
 pub mod keygen;
 pub mod proof;
+pub mod ptau;
 
 // Re-export commonly used types for convenience.
 pub use halo2_base::gates::circuit::BaseCircuitParams;
