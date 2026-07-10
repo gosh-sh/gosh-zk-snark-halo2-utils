@@ -141,6 +141,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "byteorder"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
+
+[[package]]
 name = "cc"
 version = "1.2.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -332,7 +338,7 @@ dependencies = [
  "failure",
  "gosh-dense-balanced-tree",
  "gosh-sha256-chip",
- "halo2-base",
+ "halo2-base 0.4.0",
  "halo2-ecc",
  "hex",
  "itertools 0.11.0",
@@ -423,6 +429,17 @@ dependencies = [
 
 [[package]]
 name = "ff"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d013fc25338cc558c5c2cfbad646908fb23591e2404481826742b651c9af7160"
+dependencies = [
+ "bitvec",
+ "rand_core",
+ "subtle",
+]
+
+[[package]]
+name = "ff"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c0b50bfb653653f9ca9095b427bed08ab8d75a137839d9ad64eb11810d5b6393"
@@ -506,7 +523,7 @@ name = "gosh-dense-balanced-tree"
 version = "0.1.0"
 source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#9a917fe0a6a5e04cd6b6affb3d93e19399ff5ae7"
 dependencies = [
- "halo2-base",
+ "halo2-base 0.4.0",
  "pse-poseidon",
 ]
 
@@ -515,7 +532,7 @@ name = "gosh-sha256-chip"
 version = "0.1.0"
 source = "git+https://github.com/gosh-sh/gosh-halo2-crypto-lib?branch=main#9a917fe0a6a5e04cd6b6affb3d93e19399ff5ae7"
 dependencies = [
- "halo2-base",
+ "halo2-base 0.4.0",
  "halo2-ecc",
  "sha2",
 ]
@@ -526,12 +543,26 @@ version = "0.1.0"
 dependencies = [
  "dex-halo2-circuit",
  "gosh-dense-balanced-tree",
- "halo2-base",
+ "halo2-base 0.4.1",
+ "halo2_kzg_srs",
+ "halo2curves",
  "hex",
  "rand",
  "serde",
  "serde_json",
+ "sha2",
  "tvm_block",
+]
+
+[[package]]
+name = "group"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dfbfb3a6cfbd390d5c9564ab283a0349b9b9fcd46a706c1eb10e0db70bfbac7"
+dependencies = [
+ "ff 0.12.1",
+ "rand_core",
+ "subtle",
 ]
 
 [[package]]
@@ -540,7 +571,7 @@ version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0f9ef7462f7c099f518d754361858f86d8a07af53ba9af0fe635bbccb151a63"
 dependencies = [
- "ff",
+ "ff 0.13.1",
  "rand_core",
  "subtle",
 ]
@@ -552,8 +583,8 @@ source = "git+https://github.com/gosh-sh/halo2-axiom?branch=main#1f28ded628dbf5b
 dependencies = [
  "blake2b_simd",
  "crossbeam",
- "ff",
- "group",
+ "ff 0.13.1",
+ "group 0.13.0",
  "halo2curves-axiom",
  "itertools 0.11.0",
  "maybe-rayon",
@@ -570,6 +601,26 @@ dependencies = [
 name = "halo2-base"
 version = "0.4.0"
 source = "git+https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381?branch=main#2b6576dea20639706b0c11464a565d36bcde367c"
+dependencies = [
+ "getset",
+ "halo2-axiom",
+ "itertools 0.11.0",
+ "log",
+ "num-bigint",
+ "num-integer",
+ "num-traits",
+ "poseidon-primitives",
+ "rand_chacha",
+ "rayon",
+ "rustc-hash",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "halo2-base"
+version = "0.4.1"
+source = "git+https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381?branch=bump-halo2-lib-v0.4.1#026e176de8aff8269ab3bbb7f7192b247adab965"
 dependencies = [
  "ark-std",
  "getset",
@@ -593,7 +644,7 @@ name = "halo2-ecc"
 version = "0.4.0"
 source = "git+https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381?branch=main#2b6576dea20639706b0c11464a565d36bcde367c"
 dependencies = [
- "halo2-base",
+ "halo2-base 0.4.0",
  "itertools 0.10.5",
  "num-bigint",
  "num-integer",
@@ -608,6 +659,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "halo2_kzg_srs"
+version = "0.1.0"
+source = "git+https://github.com/han0110/halo2-kzg-srs#d6929c74916f6be90751405a18df875ffcc0c241"
+dependencies = [
+ "byteorder",
+ "halo2curves",
+ "num-bigint",
+ "rand_core",
+ "rayon",
+]
+
+[[package]]
+name = "halo2curves"
+version = "0.3.1"
+source = "git+https://github.com/privacy-scaling-explorations/halo2curves?tag=0.3.1#9b67e19bca30a35208b0c1b41c1723771e2c9f49"
+dependencies = [
+ "ff 0.12.1",
+ "group 0.12.1",
+ "lazy_static",
+ "num-bigint",
+ "num-traits",
+ "pasta_curves 0.4.1",
+ "rand",
+ "rand_core",
+ "static_assertions",
+ "subtle",
+]
+
+[[package]]
 name = "halo2curves-axiom"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -615,14 +695,14 @@ checksum = "b0cd39c0df23c8b72cb7158ccb106341b078d5019b5478b3bfdaf14e898177d3"
 dependencies = [
  "blake2b_simd",
  "digest",
- "ff",
- "group",
+ "ff 0.13.1",
+ "group 0.13.0",
  "hex",
  "lazy_static",
  "num-bigint",
  "num-traits",
  "pairing",
- "pasta_curves",
+ "pasta_curves 0.5.1",
  "paste",
  "rand",
  "rand_core",
@@ -883,7 +963,7 @@ version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81fec4625e73cf41ef4bb6846cafa6d44736525f442ba45e407c4a000a13996f"
 dependencies = [
- "group",
+ "group 0.13.0",
 ]
 
 [[package]]
@@ -911,13 +991,28 @@ dependencies = [
 
 [[package]]
 name = "pasta_curves"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5cc65faf8e7313b4b1fbaa9f7ca917a0eed499a9663be71477f87993604341d8"
+dependencies = [
+ "blake2b_simd",
+ "ff 0.12.1",
+ "group 0.12.1",
+ "lazy_static",
+ "rand",
+ "static_assertions",
+ "subtle",
+]
+
+[[package]]
+name = "pasta_curves"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3e57598f73cc7e1b2ac63c79c517b31a0877cd7c402cdcaa311b5208de7a095"
 dependencies = [
  "blake2b_simd",
- "ff",
- "group",
+ "ff 0.13.1",
+ "group 0.13.0",
  "lazy_static",
  "rand",
  "static_assertions",
@@ -958,7 +1053,7 @@ version = "0.1.1"
 source = "git+https://github.com/gosh-sh/poseidon-primitives?branch=main#fb1450059deb4ae52b0dfdddcb9fdd6767ae1293"
 dependencies = [
  "bitvec",
- "ff",
+ "ff 0.13.1",
  "lazy_static",
  "log",
  "rand",
