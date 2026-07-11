@@ -40,10 +40,8 @@ the same `Proof::verify_with_vk` path with a caller-supplied VK blob.
 
 ## Repo layout
 
-- `src/{lib,io,keygen,proof}.rs` — the library
+- `src/{lib,io,keygen,proof,kzg_helper,ptau}.rs` — the library
 - `params/kzg_bn254_19.srs` — KZG SRS for K=19 (dev/test only)
-- `keys/` — fixture VKs/PKs/proofs/instances for Dark DEX and BK-set circuits
-- `tests/` — Dark DEX, BK-set verifier, and layer-hash (d3/d8) round-trip tests
 
 ## Build
 

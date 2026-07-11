@@ -27,7 +27,7 @@
 //! raw SRS bytes are consumable by
 //! `ParamsKZG::<Bn256>::read_custom(RawBytesUnchecked)` (halo2-base
 //! side) and the extracted point bytes are consumable by
-//! [`crate::io::build_kzg_verifier_params_from_points`].
+//! [`crate::kzg_helper::build_kzg_verifier_params_from_points`].
 
 use std::io::{Read, Seek};
 
