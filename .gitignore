@@ -1,4 +1,5 @@
 /target
 /keys
 /params
+/Cargo.lock
 .DS_Store

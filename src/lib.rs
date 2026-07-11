@@ -1,5 +1,6 @@
 pub mod io;
 pub mod keygen;
+pub mod kzg_helper;
 pub mod proof;
 pub mod ptau;
 

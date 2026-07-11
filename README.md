@@ -6,7 +6,7 @@ delegates to `BaseCircuitBuilder::configure_with_params` can be proven and
 verified through a single uniform API.
 
 Backend: `halo2-base` (axiom fork) pulled from
-`gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381`, branch `main`.
+`gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381`, branch `bump-halo2-lib-v0.4.1`.
 Curve: BN254. Multiopen: SHPLONK. Transcript: Blake2b.
 
 ## Modules
@@ -20,6 +20,13 @@ Curve: BN254. Multiopen: SHPLONK. Transcript: Blake2b.
   `create_for_circuit{,_from_paths}` and `verify_with_vk{,_from_bytes,_from_path}`.
   `verify_with_vk` takes a pre-deserialized VK so callers can amortize the
   expensive `EvaluationDomain` build (K=19 takes seconds).
+- `kzg_helper` — `build_kzg_verifier_params_from_points(k, g0, g2, s_g2)`
+  reconstructs a verifier-only `ParamsKZG<Bn256>` from ~320 bytes of raw
+  points, skipping the multi-MB `g[..]` vector needed only by the prover.
+- `ptau` — Hermez Perpetual-Powers-of-Tau `.ptau` → halo2-canonical raw SRS
+  plus `KzgVerifierBytes { g0, g2, s_g2 }`. Trust root pinned via
+  `HERMEZ_K20_RAW_SRS_SHA256`; replaces ad-hoc/self-generated SRS with the
+  community-audited ceremony as the basis for on-chain verification.
 
 ## How tvm-sdk uses it
 
@@ -34,16 +41,13 @@ Used **only** by `tvm-sdk/tvm_vm` under the `gosh` cargo feature
 - `tvm_vm/src/executor/zk_halo2_utils.rs` — imports `io::read_vk` to
   reconstruct the embedded `DARK_DEX_W128_VK_BYTES` constant with
   `dark_dex_w128_config_params()`.
-
-`ZKHALO2VERIFYWITHVK` (`0xC7 0x4A`) lives in `zk_halo2_with_vk.rs` and uses
-the same `Proof::verify_with_vk` path with a caller-supplied VK blob.
+- `tvm_vm/src/executor/zk_halo2_with_vk.rs` — `ZKHALO2VERIFYWITHVK` opcode
+  (`0xC7 0x4A`), same `Proof::verify_with_vk` path with a caller-supplied VK.
 
 ## Repo layout
 
-- `src/{lib,io,keygen,proof}.rs` — the library
+- `src/{lib,io,keygen,proof,kzg_helper,ptau}.rs` — the library
 - `params/kzg_bn254_19.srs` — KZG SRS for K=19 (dev/test only)
-- `keys/` — fixture VKs/PKs/proofs/instances for Dark DEX and BK-set circuits
-- `tests/` — Dark DEX, BK-set verifier, and layer-hash (d3/d8) round-trip tests
 
 ## Build
 
@@ -54,6 +58,3 @@ fast run — standard for halo2 work in this tree).
 cargo build
 cargo test
 ```
-
-Dev-deps additionally pull `gosh-dense-balanced-tree`, `dex-halo2-circuit`,
-and `tvm_block` (for tests only — not exposed by the library).
