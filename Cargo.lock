@@ -174,6 +174,17 @@ dependencies = [
 
 [[package]]
 name = "ff"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d013fc25338cc558c5c2cfbad646908fb23591e2404481826742b651c9af7160"
+dependencies = [
+ "bitvec",
+ "rand_core",
+ "subtle",
+]
+
+[[package]]
+name = "ff"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c0b50bfb653653f9ca9095b427bed08ab8d75a137839d9ad64eb11810d5b6393"
@@ -248,6 +259,17 @@ dependencies = [
 
 [[package]]
 name = "group"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dfbfb3a6cfbd390d5c9564ab283a0349b9b9fcd46a706c1eb10e0db70bfbac7"
+dependencies = [
+ "ff 0.12.1",
+ "rand_core",
+ "subtle",
+]
+
+[[package]]
+name = "group"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0f9ef7462f7c099f518d754361858f86d8a07af53ba9af0fe635bbccb151a63"
@@ -296,6 +318,35 @@ dependencies = [
  "rustc-hash",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "halo2_kzg_srs"
+version = "0.1.0"
+source = "git+https://github.com/han0110/halo2-kzg-srs#d6929c74916f6be90751405a18df875ffcc0c241"
+dependencies = [
+ "byteorder",
+ "halo2curves",
+ "num-bigint",
+ "rand_core",
+ "rayon",
+]
+
+[[package]]
+name = "halo2curves"
+version = "0.3.1"
+source = "git+https://github.com/privacy-scaling-explorations/halo2curves?tag=0.3.1#9b67e19bca30a35208b0c1b41c1723771e2c9f49"
+dependencies = [
+ "ff 0.12.1",
+ "group 0.12.1",
+ "lazy_static",
+ "num-bigint",
+ "num-traits",
+ "pasta_curves 0.4.1",
+ "rand",
+ "rand_core",
+ "static_assertions",
+ "subtle",
 ]
 
 [[package]]
@@ -467,6 +518,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81fec4625e73cf41ef4bb6846cafa6d44736525f442ba45e407c4a000a13996f"
 dependencies = [
  "group 0.13.0",
+]
+
+[[package]]
+name = "pasta_curves"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5cc65faf8e7313b4b1fbaa9f7ca917a0eed499a9663be71477f87993604341d8"
+dependencies = [
+ "blake2b_simd",
+ "ff 0.12.1",
+ "group 0.12.1",
+ "lazy_static",
+ "rand",
+ "static_assertions",
+ "subtle",
 ]
 
 [[package]]
