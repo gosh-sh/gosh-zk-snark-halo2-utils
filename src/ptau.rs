@@ -30,6 +30,9 @@
 //! [`crate::kzg_helper::build_kzg_verifier_params_from_points`].
 
 use std::io::{Read, Seek};
+#[cfg(feature = "download")]
+use std::path::Path;
+use std::path::PathBuf;
 
 use halo2_curves::bn256::Bn256;
 use halo2_kzg_srs::{Srs, SrsFormat};
@@ -56,6 +59,77 @@ pub const HERMEZ_K20_PTAU_URL: &str =
 /// Expected size (bytes) of `powersOfTau28_hez_final_20.ptau`.
 /// Matches `PTAU_EXPECTED_SIZE` in `bootstrap_hermez_srs.sh`.
 pub const HERMEZ_K20_PTAU_SIZE: u64 = 1_208_042_648;
+
+/// Filename downstream tooling uses when caching the downloaded ptau on
+/// disk. Matches the SnarkJs artifact name; also the leaf component of
+/// [`default_ptau_cache_path`].
+pub const HERMEZ_K20_PTAU_FILENAME: &str = "powersOfTau28_hez_final_20.ptau";
+
+/// Default on-disk cache location for the Hermez K=20 ptau:
+/// `$HOME/.cache/halo2-kzg-srs/powersOfTau28_hez_final_20.ptau`.
+///
+/// Single source of truth for the cache path across all consumers of this
+/// crate. Panics if `HOME` is not set.
+pub fn default_ptau_cache_path() -> PathBuf {
+    let home = std::env::var("HOME").expect("HOME must be set");
+    PathBuf::from(home)
+        .join(".cache/halo2-kzg-srs")
+        .join(HERMEZ_K20_PTAU_FILENAME)
+}
+
+/// Ensure the Hermez K=20 ptau exists at `path` with the expected size.
+///
+/// On cache miss (file absent or wrong size), download from
+/// [`HERMEZ_K20_PTAU_URL`], create parent directories, and re-verify size.
+/// Only file size is checked here — cryptographic verification of the
+/// SHA-256 trust anchor happens later in [`read_hermez_ptau_and_verify`].
+///
+/// Available under the `download` feature (adds a `reqwest` dependency).
+/// If the ptau is already on disk, use [`read_hermez_ptau_and_verify`]
+/// directly without this feature.
+#[cfg(feature = "download")]
+pub fn ensure_hermez_k20_ptau(
+    path: &Path,
+) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    if let Ok(meta) = std::fs::metadata(path) {
+        if meta.len() == HERMEZ_K20_PTAU_SIZE {
+            eprintln!(
+                "Ptau cached at {} ({} bytes) — OK",
+                path.display(),
+                meta.len()
+            );
+            return Ok(());
+        }
+        eprintln!(
+            "Ptau at {} has wrong size ({} vs expected {}) — re-downloading",
+            path.display(),
+            meta.len(),
+            HERMEZ_K20_PTAU_SIZE,
+        );
+    } else {
+        eprintln!(
+            "Ptau not cached — downloading from {}",
+            HERMEZ_K20_PTAU_URL
+        );
+    }
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    let mut resp = reqwest::blocking::get(HERMEZ_K20_PTAU_URL)?.error_for_status()?;
+    let mut file = std::fs::File::create(path)?;
+    let bytes = std::io::copy(&mut resp, &mut file)?;
+    eprintln!("  Downloaded {bytes} bytes to {}", path.display());
+    let meta = std::fs::metadata(path)?;
+    if meta.len() != HERMEZ_K20_PTAU_SIZE {
+        return Err(format!(
+            "Downloaded ptau size mismatch: expected {} got {}",
+            HERMEZ_K20_PTAU_SIZE,
+            meta.len(),
+        )
+        .into());
+    }
+    Ok(())
+}
 
 /// The three KZG points a verifier needs (uncompressed BN254 affine bytes).
 /// These are `k`-invariant: `downsize` only truncates `g[..]`/`g_lagrange[..]`.

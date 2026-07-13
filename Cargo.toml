@@ -15,6 +15,16 @@ rand = "0.8"
 halo2_kzg_srs = { git = "https://github.com/han0110/halo2-kzg-srs" }
 halo2_curves = { git = "https://github.com/privacy-scaling-explorations/halo2curves", tag = "0.3.1", package = "halo2curves" }
 sha2 = "0.10"
+# Optional — only pulled in when the `download` feature is enabled (used by
+# `ptau::ensure_hermez_k20_ptau`).
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"], optional = true }
+
+[features]
+default = []
+# Enables ptau download orchestration (`ptau::ensure_hermez_k20_ptau`).
+# Off by default so consumers that already have the ptau on disk don't
+# pull in `reqwest` and its transitive deps.
+download = ["dep:reqwest"]
 
 [patch.crates-io]
 halo2-base = { git = "https://github.com/gosh-sh/halo2-lib-zkevm-sha256-and-bls12-381", branch = "bump-halo2-lib-v0.4.1" }
